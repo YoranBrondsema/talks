@@ -1,0 +1,22 @@
+<h1>Create a new blog post</h1>
+<form {{action "createBlogPost" on="submit"}}>
+  <div>
+    <label>Title</label>
+    {{input value=title class="title"}}
+    {{! Errors}}
+    {{#each error in errors.title}}
+      <p class="error">{{error}}</p>
+    {{/each}}
+  </div>
+  <div>
+    <label>Content</label>
+    {{textarea value=content class="content"}}
+    {{! Errors}}
+    {{#each error in errors.content}}
+      <p class="error">{{error}}</p>
+    {{/each}}
+  </div>
+  <div>
+    {{input value="Create new blog post" type="submit" class="submit"}}
+  </div>
+</form>
