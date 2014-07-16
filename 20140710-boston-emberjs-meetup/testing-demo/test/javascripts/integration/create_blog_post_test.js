@@ -9,7 +9,7 @@ module("Create a blog post", {
 var title = "Any title";
 var content = "Any content";
 
-test("Empty title", function() {
+test("Empty title outputs an error", function() {
   expect(2);
 
   visit('/');
@@ -24,7 +24,7 @@ test("Empty title", function() {
   });
 });
 
-test("Empty content", function() {
+test("Empty content outputs an error", function() {
   expect(2);
 
   visit('/');
