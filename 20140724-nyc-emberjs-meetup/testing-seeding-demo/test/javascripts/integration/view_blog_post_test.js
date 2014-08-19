@@ -1,12 +1,5 @@
 "use strict";
 
-/* === DATA === */
-var Seed = {};
-Seed.blog_post = {
-  title: "Integration testing in Ember.js",
-  content: "It's fun!"
-}
-
 module("View a blog post", {
   /* === SEED DATABASE === */
   setup: function() {
@@ -38,6 +31,13 @@ module("View a blog post", {
     TestingDemo.reset();
   }
 });
+
+/* === DATA === */
+var Seed = {};
+Seed.blog_post = {
+  title: "Integration testing in Ember.js",
+  content: "It's fun!"
+}
 
 /* === HELPERS === */
 var blog_post = Seed.blog_post;

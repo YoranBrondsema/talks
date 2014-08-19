@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="Ember.js Data Binding" />
+    <meta charset=utf-8 />
+    <title>Ember.js - Data binding</title>
+
+    <script src="../lib/jquery.min.js"></script>
+    <script src="../lib/handlebars.js"></script>
+    <script src="../lib/ember.js"></script>
+    <script src="../lib/ember-data.js"></script>
+  </head>
+  <body>
+    <script type="text/x-handlebars" data-template-name="users">
+      {{#each}}
+        Hello, {{firstName}} {{lastName}}
+      {{/each}}
+    </script>
+
+    <script>
+      // Create the Ember application
+      var App = Ember.Application.create();
+
+      // Define a User model
+      App.User = DS.Model.extend({
+        firstName: DS.attr('string'),
+        lastName: DS.attr('string')
+      });
+
+      // Define a route 'users' that points to root
+      App.Router.map(function () {
+        this.resource('users', { path: '/' });
+      });
+
+      var users;
+      // Defined route 'users'-> naming from convention
+      // Route defines the model that is shown
+      App.UsersRoute = Ember.Route.extend({
+        model: function () {
+          users = this.get('store').find('user');
+          return users;
+        }
+      });
+
+      // Use fixtures for models (typically you would use RESTAdapter)
+      App.ApplicationAdapter = DS.FixtureAdapter.extend();
+      // Dummy data
+      App.User.FIXTURES = [
+        {
+          id: 1,
+          firstName: 'Yoran',
+          lastName: 'Brondsema'
+        }
+      ];
+    </script>
+  </body>
+</html>

@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Meetup #1 - Ember.js Brussels</title>
+    <meta name="description" content="Presentation for the first Brussels Ember.js Meetup">
+    <meta name="author" content="Yoran Brondsema">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/hstry.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section class="intro">
+          <h1>Welcome, Embeerists</h1>
+          <h3>to the <strong>second</strong> Ember.js meetup in <strong>Brussels</strong></h3>
+          <h3>4th of December 2013</h3>
+          <img src="images/ember-belgium.png" alt="Ember.js Belgium" />
+        </section>
+        <section>
+          <h1>Agenda</h2>
+          <ul>
+            <li>A Live Polling System in Ember.js (Yoran)</li>
+            <li>Loading Animations for Asynchronous Data (Yoran)</li>
+            <li>?</li>
+          </ul>
+        </section>
+        <section>
+          <h1>Live polling system</h1>
+          <h3>For periodic updates in a single-page app</h3>
+          <h3>No real-time updates (need persistent connection like WebSockets)</h3>
+          <h3>Used in Hstry for live updates of comments and likes</h3>
+        </section>
+        <section>
+          <h1>How does Ember help?</h1>
+          <h3>Add models to the store and view updates itself</h3>
+        </section>
+        <section>
+          <h1>Example</h1>
+          <h3>We have <code>Post</code>'s and <code>Comment</code>'s</h3>
+          <h3>We want to periodically update the new comments to a post</h3>
+        </section>
+        <section>
+          <h1>Show me the code</h1>
+          <h3>Pollster object</h3>
+          <h3>Responsible for setting an interval that periodically calls an <code>onPoll</code> function</h3>
+          <pre><code data-trim class="javascript">
+App.Pollster = Ember.Object.extend({
+  start: function() {
+    // POLL_INTERVAL is for instance 30 seconds
+    this.timer = setInterval(this.onPoll.bind(this), POLL_INTERVAL);
+  },
+  stop: function() {
+    clearInterval(this.timer);
+  },
+  onPoll: function() {
+    // Issue JSON request and add data to the store
+  }
+});
+          </code></pre>
+        </section>
+        <section>
+          <h3>Setup this pollster in the route</h3>
+          <pre><code data-trim class="javascript">
+App.PostRoute = Ember.Route.extend({
+  setupController: function(controller, model) {
+    this.set('pollster', App.Polster.create({
+      onPoll: function() {
+        // Defined on the next slide
+      }
+    }));
+    this.get('pollster').start();
+  },
+  // This is called upon exiting the Route
+  deactivate: function() {
+    this.get('pollster').stop();
+  }
+});
+          </code></pre>
+        </section>
+        <section>
+          <h3>The <code>onPoll</code> function</h3>
+          <pre><code data-trim class="javascript">
+// This code is executed in the 'setupController' hook of the Route
+var route = this;
+
+onPoll: function() {
+  // AJAX request
+  Ember.$.getJSON('/updates', 'GET').then(function(json_obj) {
+    // The JSON structure is as follows:
+    // {
+    //   comments: [
+    //     { ... },
+    //     { ... },
+    //   ]
+    // }
+
+    // Iterate through the comments
+    Ember.$.each(json_obj.comments, function(index, comment) {
+      // Make sure that the comment is not already in the store
+      if (! route.get('store').recordIsLoaded(App.Comment, comment.id)) {
+        route.get('store').push('comment', comment);
+      }
+    });
+  });
+}
+          </code></pre>
+        </section>
+        <section>
+          <h3>Now we have added the data to the store</h3>
+          <h3>But the view is not necessarily updated</h3>
+          <h3>Need to use the <code>filter</code> API function</h3>
+          <blockquote>
+            <p>Filters, on the other hand, perform a live search of all of the records in the store’s cache.</p>
+            <p>Takes a type and filter function, and returns a live RecordArray that remains up to date as new records are loaded into the store or created locally.</p>
+          </blockquote>
+        </section>
+        <section>
+          <h2>Our template</h2>
+          <pre><code data-trim class="handlebars">
+<article class="post">
+  <h2>{{title}}</h2>
+  <p>{{content}}</p>
+  <aside>{{render "comments" comments}}</aside>
+</article>
+          </code></pre>
+        </section>
+        <section>
+          <h2>Our controller for the template</h2>
+          <pre><code data-trim class="javascript">
+App.PostController = Ember.ObjectController.extend({
+  comments: function() {
+    var postId = this.get('id');
+    // Get all the comments that belong to this post
+    return this.get('store').filter('comment', function(comment) {
+      return comment.get('post.id') == postId;
+    });
+  }.property()
+});
+          </code></pre>
+        </section>
+        <section>
+          <h1>Questions?</h1>
+        </section>
+        <section>
+          <h1>Loading animations</h1>
+          <h3>People don't like waiting</h3>
+          <h3>But they mind less when they know something is happening</h3>
+        </section>
+        <section>
+          <h1>First solution in Ember</h1>
+          <h3>Use <code>beforeModel</code> and <code>afterModel</code> hooks</h3>
+          <pre><code data-trim class="javascript">
+App.PostRoute = Ember.Route.extend({
+  beforeModel: function() {
+    // Assume the 'loading' class displays an overlay with a loading animation
+    Ember.$('body').addClass('loading');
+  },
+  model: function(params) {
+    return this.store.find('post', params.post_id);
+  },
+  afterModel: function() {
+    Ember.$('body').removeClass('loading');
+  }
+});
+          </code></pre>
+        </section>
+        <section>
+          <h1>Limitations</h1>
+          <h3>Only works if the model doesn't have any asynchronous associations</h3>
+          <pre><code data-trim class="javascript">
+App.Post = DS.Model.extend({
+  title: DS.attr('string'),
+  comments: DS.hasMany('comment', { async: true })
+});
+          </code></pre>
+          <h3>Example JSON response for a Post</h3>
+          <pre><code data-trim class="javascript">
+{
+  post: {
+    id: 1,
+    title: "This is a post",
+    links: {
+      comments: "/post/1/comments"
+    }
+  }
+}
+          </code></pre>
+        </section>
+        <section>
+          <pre><code data-trim class="handlebars">
+<article class="post">
+  <h2>{{title}}</h2>
+  <p>{{content}}</p>
+  <aside>{{render "comments" comments}}</aside>
+</article>
+          </code></pre>
+          <h3>The comments will only be loaded after the template has started rendering.</h3>
+          <h3>This is after the <code>afterModel</code> hook</h3>
+          <h3>Rest of the page will have rendered</h3>
+          <h3>Instead of comments the user will see "blank"</h3>
+        </section>
+        <section>
+          <h2>We want to wait until everything has loaded to remove the loading animation</h2>
+        </section>
+        <section>
+          <h1>Second solution</h1>
+          <h3>Use Promises</h3>
+        </section>
+        <section>
+          <h3>What does this return</h3>
+          <pre><code data-trim class="javascript">
+post.get('comments');
+          </code></pre>
+          <h3><code>PromiseArray</code> if comments not yet loaded</h3>
+          <h3><code>ManyArray</code> if comments already in the store</h3>
+        </section>
+        <section>
+          <h3>We want to have Promises everywhere</h3>
+          <pre><code data-trim class="javascript">
+Ember.RSVP.makePromise = function(maybePromise) {
+  // Test if it's a promise
+  if (maybePromise.then) {
+    // Then return it
+    return maybePromise;
+  } else {
+    // Wrap it in a Promise that resolves directly
+    return Ember.RSVP.resolve(maybePromise);
+  }
+};
+          </code></pre>
+        </section>
+        <section>
+          <h2>The code</h2>
+          <pre><code data-trim class="javascript">
+App.PostRoute = Ember.Route.extend({
+  beforeModel: function() {
+    // Assume the 'loading' class displays an overlay with a loading animation
+    Ember.$('body').addClass('loading');
+  },
+  model: function(params) {
+    return this.store.find('post', params.post_id);
+  },
+  setupController: function(post, controller) {
+    // Pre-load the comments
+    // The 'get' call will result in an AJAX call to get the comments and returns a promise
+    var comments = Ember.RSVP.makePromise(post.get('comments'));
+
+    // Wait until the promise has been resolved
+    comments.then(function() {
+      // Wait until all templates have finished rendering
+      Ember.run.scheduleOnce('afterRender', this, function() {
+        // Remove the loading animation
+        Ember.$('body').removeClass('loading');
+      });
+    });
+  }
+});
+          </code></pre>
+        </section>
+        <section>
+          <h1>Thank you</h1>
+          <h3>Oh, and Hstry is hiring :-)</h3>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="lib/js/jquery-2.0.3.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      $('.slide-architecture').attr('data-transition', 'none');
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      //transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+      transition: 'linear',
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+        { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+    });
+
+    </script>
+
+  </body>
+</html>

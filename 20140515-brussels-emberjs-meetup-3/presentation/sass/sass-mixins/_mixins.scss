@@ -1,0 +1,42 @@
+/* Functions */
+@function rem-to-px($rem) {
+  @return $rem * $font-size;
+}
+
+/* Fonts */
+$font-size: 10px;
+
+@mixin font-size($size, $unit: rem) {
+	font-size: $size + unquote($unit);
+
+	@if ($unit == "rem") {
+		.no-cssremunit & { font-size: rem-to-px($size); }
+	}
+}
+
+// @mixin font-face($name, $path, $weight: normal, $style: normal) {
+// 	@font-face {
+// 		font-family: $name;
+// 		src: url(font-path($path + '.eot'));
+// 		src: url(font-path($path + '.eot?#iefix')) format('embedded-opentype'),
+// 				 url(font-path($path + '.woff')) format('woff'),
+// 				 url(font-path($path + '.ttf')) format('truetype'),
+// 				 url(font-path($path + '.svg##{$name}')) format('svg');
+// 		font-weight: $weight;
+// 		font-style: $style;
+// 	}
+// }
+
+/* SVG */
+@mixin background-image-svg($img-name, $png-directory: "png-fallback/") {
+  background-image: image-url($img-name + ".svg");
+  .no-svg & { background-image: image-url($png-directory + $img-name + ".png"); }
+}
+
+/* CSS Effects */
+@mixin opacity($opacity) {
+	opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  .lt-ie9 & { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacity-ie})"; } // IE8
+  .lt-ie8 & { filter: alpha(opacity=$opacity-ie); } // IE 5-7
+}
