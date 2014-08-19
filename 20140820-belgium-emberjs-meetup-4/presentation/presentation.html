@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Ember Data and JSON API - Belgium Ember.js Meetup #4</title>
+    <meta name="description" content="Presentation for the Belgium Ember.js meetup group">
+    <meta name="author" content="Yoran Brondsema">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/hstry.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/github.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+    <!--[if lt IE 9]>
+      <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section class="intro">
+          <h2>Ember Data and JSON API</h2>
+          <p><a href="https://twitter.com/YoranBrondsema">@YoranBrondsema</a></p>
+          <time datetime="2014-08-20">August 20th 2014</time>
+          <img src="images/hstry.svg" alt="Logo of Hstry" class="hstry-logo" />
+        </section>
+        <section>
+          <h2>About me</h2>
+          <p>CTO of <a href="http://www.hstry.co">Hstry</a></p>
+          <p>Ember.js user for about 1 year</p>
+        </section>
+        <section>
+          <section>
+            <h2>What is Ember Data?</h2>
+          </section>
+          <section>
+            <h3>The "M" in MVC</h3>
+            <p><i>Framework for managing your models and relationships</i></p>
+          </section>
+          <section>
+            <h3>Separate project</h3>
+            <ul>
+              <li>Different repository</li>
+              <li>Can use Ember.js without Ember Data</li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <h2>Four main components</h2>
+          <p>Models</p>
+          <p>Store</p>
+          <p>Adapter</p>
+          <p>Serializer</p>
+        </section>
+        <section>
+          <h2>Specifying a model</h2>
+          <pre><code data-trim class="javascript">
+App.Post = DS.Model.extend({
+  /* Attributes */
+  title: DS.attr('string'),
+  body: DS.attr('string'),
+  nrViews: DS.attr('number'),
+  createdAt: DS.attr('date'),
+  isPublished: DS.attr('boolean'),
+  /* Relationships */
+  author: DS.belongsTo('user'),
+  comments: DS.hasMany('comment'),
+  /* Properties */
+  hasComments: function() {
+    return this.get('comments.length') > 0;
+  }.property('comments.length')
+});
+          </code></pre>
+        </section>
+        <section>
+          <section>
+            <h2>The store</h2>
+            <ul>
+              <li>Contains all instances of models</li>
+              <li>Is a singleton</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Create and destroy instances</h3>
+            <ul>
+              <li><code>store.createRecord</code></li>
+              <li><code>store.deleteRecord</code></li>
+            </ul>
+          </section>
+          <section>
+            <h3>Query records</h3>
+            <ul>
+              <li><code>store.find('post', 1)</code></li>
+              <li><code>store.find('post')</code></li>
+              <li><code>store.find('post', { isPublished: true })</code></li>
+            </ul>
+          </ul>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>The adapter</h2>
+            <p>Mediates between store and persistence layer</p>
+          </section>
+          <section>
+            <h3>Write your own</h3>
+            <ul>
+              <li><code>FixtureAdapter</code></li>
+              <li><code>RESTAdapter</code></li>
+              <li><code>LocalStorageAdapter?</code></li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Example <code>RESTAdapter</code></h2>
+          </section>
+
+          <section>
+            <p><strong>Store</strong> <code>find('post')</code></p>
+            <p>&#x2193;</p>
+            <p><strong>RESTAdapter</strong> <code>findAll('post')</code></p>
+            <p>&#x2193;</p>
+            <p>GET /posts</p>
+          </section>
+
+          <section>
+            <p><strong>Store</strong> <code>find('post', 1)</code></p>
+            <p>&#x2193;</p>
+            <p><strong>RESTAdapter</strong> <code>find('post', 1)</code></p>
+            <p>&#x2193;</p>
+            <p>GET /posts/1</p>
+          </section>
+
+          <section>
+            <p><strong>Store</strong> <code>find('post', { isPublished: true })</code></p>
+            <p>&#x2193;</p>
+            <p><strong>RESTAdapter</strong> <code>findQuery('post', { isPublished: true })</code></p>
+            <p>&#x2193;</p>
+            <p>GET /posts?is_published=true</p>
+          </section>
+
+          <section>
+            <p><strong>Store</strong> <code>createRecord('post')</code></p>
+            <p>&#x2193;</p>
+            <p><strong>RESTAdapter</strong> <code>createRecord('post')</code></p>
+            <p>&#x2193;</p>
+            <p>POST /posts</p>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>The serializer</h2>
+            <p>Serializes and normalizes data in a form expected by Ember Data</p>
+            <p>Used by adapter</p>
+            <p><strong>When sending to server</strong> <code>serialize</code></p>
+            <p><strong>When receiving from server</strong> <code>normalize</code></p>
+          </section>
+        </section>
+        <section>
+          <h2>Legacy API?</h2>
+          <p>JSON structure: custom serializers</p>
+          <p>URLs: custom adapters</p>
+        </section>
+        <section>
+          <section>
+            <h2>JSON API</h2>
+            <p>Specification to standardize representation of resources in JSON</p>
+            <p>Driven by Yehuda Katz and Steve Klabnik</p>
+            <p><a href="http://jsonapi.org">jsonapi.org</a></p>
+          </section>
+          <section>
+            <h3>Various implementations</h3>
+            <ul>
+              <li><strong>Ember Data</strong> <code>RESTAdapter/RESTSerializer</code></li>
+              <li><strong>Rails</strong> <code>ActiveModel::Serializers</code></li>
+              <li><strong>Python</strong> <code>SQLAlchemy-JSONAPI</code></li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <h2>Status of Ember Data</h2>
+          <p>Right now v1.0.0-beta.9</p>
+          <p>Production release date not yet known</p>
+          <p><i>Ember Data is still under active development and is currently beta quality. That being said, the API has largely stabilized and many companies are using it in production.</i></p>
+        </section>
+        <section>
+          <h2>Thank you</h2>
+          <img src="images/hstry.svg" alt="Logo of Hstry" class="hstry-logo" />
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="lib/js/jquery-2.0.3.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      $('.slide-architecture').attr('data-transition', 'none');
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      //transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+      transition: 'linear',
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        // { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/highlight/highlight.pack.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+        { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+    });
+
+    </script>
+
+  </body>
+</html>
