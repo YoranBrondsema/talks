@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>REST APIs in the context of single-page applications</title>
+    <meta name="description" content="Presentation for the BRUG Meetup group">
+    <meta name="author" content="Yoran Brondsema">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/hstry.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/github.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section class="intro">
+          <h2 style="margin-bottom: 80px;">REST APIs in the context of single-page applications</h2>
+          <p><a href="https://twitter.com/YoranBrondsema">@YoranBrondsema</a></p>
+          <p>August 25th 2014</p>
+          <img src="images/hstry.svg" alt="Logo of Hstry" class="hstry-logo" />
+        </section>
+        <section>
+          <h2>About me</h2>
+          <p>CTO of <a href="http://www.hstry.co">Hstry</a></p>
+          <p>Organizer of Belgium Ember.js meetups</p>
+        </section>
+        <section>
+          <h2>A bit of background</h2>
+          <p><a href="http://www.hstry.co">Hstry</a> application has a <strong>Ruby on Rails REST API</strong> and an <strong>Ember.js front-end</strong></p>
+          <p>Server-client communication is all <strong>JSON</strong></p>
+        </section>
+        <section>
+          <section>
+            <h2>What is REST?</h2>
+            <p>Architecture for the World Wide Web</p>
+          </section>
+          <section>
+            <h3>Separation of client and server</h3>
+          </section>
+          <section>
+            <h3>Stateless</h3>
+          </section>
+          <section>
+            <h3>Unique identification of resources through URIs</h3>
+            <p><code>http://www.example.com/posts/15</code></p>
+          </section>
+          <section>
+            <h3>Standard HTTP methods</h3>
+            <ul>
+              <li><code>GET</code></li>
+              <li><code>POST</code></li>
+              <li><code>PUT</code></li>
+              <li><code>DELETE</code></li>
+              <li><code>(PATCH)</code></li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Authentication</h2>
+          </section>
+          <section>
+            <p>Implies some form of state</p>
+            <p>REST is stateless so stored on client</p>
+          </section>
+          <section>
+            <h3>Token-based authentication</h3>
+            <ol>
+              <li>At login, generate token on server</li>
+              <li>Return token in response</li>
+              <li>Client includes token with every request</li>
+            </ol>
+          </section>
+          <section>
+            <img src="images/rest-authentication.png" alt="Token-based authentication" /> 
+          </section>
+          <section>
+            <h3>Where to store token?</h3>
+          </section>
+          <section>
+            <h3>In memory</h3>
+            <ul>
+              <li>Single-page application so no refreshes</li>
+              <li>Does not persist when user closes and opens tab</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Cookies</h3>
+            <ul>
+              <li>Automatically sent with every request</li>
+              <li>Also sends other stored information</li>
+              <li>Stores text, not objects</li>
+            </ul>
+          </section>
+          <section>
+            <h3>sessionStorage and localStorage</h3>
+            <ul>
+              <li>Part of Web Storage specification</li>
+              <li>Secure, per-domain storage</li>
+              <li>Stores Javascript objects, not text</li>
+              <li>Stays on client (manually send with every request)</li>
+              <li>Browser support is good (<a href="http://caniuse.com/#feat=namevalue-storage">caniuse.com</a>)</li>
+            </ul>
+          </section>
+          <section>
+            <h2>All of this requires HTTPS!</h2>
+          </section>
+          <section>
+            <h3>Implementation in Devise, unfortunately...</h3>
+            <img src="images/devise-token-authentication-deprecated.png" alt="Deprecated token authentication in Devise" />
+          </section>
+          <section>
+            <p>Implementation vulnerable to timing attacks</p>
+            <p>Maintainer provided secure implementation, not yet merged in Devise (see <a href="https://gist.github.com/josevalim/fb706b1e933ef01e4fb6#file-2_safe_token_authentication-rb">here</a>)</p>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Authorization</h2>
+          </section>
+          <section>
+            <h3>Deals with permissions</h3>
+            <p>Is User X allowed to perform Action Y?</p>
+            <p>Comes after authentication</p>
+          </section>
+          <section>
+            <h3>Need context-aware DSL that is expressive enough</h3>
+            <p><strong style="color: green">ALLOWED</strong> User with id 15 requests <code>PUT /api/user/15/profile</code>
+            <p><strong style="color: red">FORBIDDEN</strong> User with id 16 requests <code>PUT /api/user/15/profile</code>
+          </section>
+          <section>
+            <h3>Define roles</h3>
+            <p>e.g. admin, editor, user</p>
+            <p>Specify permissions for each role.</p>
+          </section>
+          <section>
+            <h3><a href="https://github.com/stffn/declarative_authorization">declarative_authorization</a> gem</h3>
+            <pre><code data-trim class="ruby">
+role :guest do
+  ...
+end
+
+role :student do
+  # Include all permissions from guest
+  includes :guest
+
+  has_permission_on :timelines, to: :show do
+    # Can only see timelines that are made by himself
+    if_attribute  :type => is { "UserTimeline" },
+                  :author => is { user }
+  end
+end
+            </code></pre>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>HTTP status codes</h2>
+          </section>
+          <section>
+            <p>Adds semantics to HTTP responses</p>
+            <p>Both for success (2xx) and error (4xx)</p>
+          </section>
+          <section>
+            <h3>REST verbs</h3>
+            <ul>
+              <li><code>GET</code> 200 OK</li>
+              <li><code>POST</code> 201 Created</li>
+              <li><code>PUT</code> 204 No content (200 OK if include response)</li>
+              <li><code>DELETE</code> 204 No content</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Error codes</h3>
+            <ul>
+              <li><strong>Wrong authentication</strong> 401 Unauthorized</li>
+              <li><strong>Wrong authorization</strong> 403 Forbidden</li>
+              <li><strong>Parameter is missing</strong> 412 Precondition failed</li>
+              <li><strong>Other error</strong> 422 Unprocessable entity</li>
+            </ul>
+          </section>
+          <section>
+            <p>Nice overview on <a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes">http://en.wikipedia.org/wiki/List_of_HTTP_status_codes</a></p>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>JSON API</h2>
+          </section>
+          <section>
+            <p><a href="http://jsonapi.org/">jsonapi.org</a></p>
+            <p>Standard for representation of JSON responses</p>
+            <p>Initiative by Steve Klabnik and Yehuda Katz</p>
+            <p>Belief that shared conventions increase productivity through generalized tooling</p>
+          </section>
+          <section>
+            <h2>Specifies...</h2>
+            <h3>...how resources are represented in JSON</h3>
+            <pre><code data-trim class="javascript">
+{
+  "links": {
+    "posts.author": {
+      "href": "http://example.com/people/{posts.author}",
+      "type": "people"
+    },
+    "posts.comments": {
+      "href": "http://example.com/comments/{posts.comments}",
+      "type": "comments"
+    }
+  },
+  "posts": [{
+    "id": "1",
+    "title": "Rails is Omakase",
+    "links": {
+      "author": "9",
+      "comments": [ "5", "12", "17", "20" ]
+    }
+  }]
+}
+            </code></pre>
+          </section>
+          <section>
+            <h3>...HTTP status codes and Location header</h3>
+            <blockquote>
+              When one or more resources has been created, the server MUST return a 201 Created status code.
+            </blockquote>
+            <blockquote>
+              The response MUST include a Location header identifying the location of all resources created by the request.
+            </blockquote>
+          </section>
+          <section>
+            <h3>...structure for errors</h3>
+            <pre><code data-trim class="javascript">
+{
+  "errors": [{
+    "id": "forbidden",
+    "href": "http://help.example.com/authorization_error",
+    "status": "403",
+    "code": "ERROR_12345",
+    "title": "Authorization error",
+    "detail": "The requesting user does not have the permissions to perform this action"
+  }]
+}
+            </code></pre>
+          </section>
+          <section>
+            <h3>...support for PATCH</h3>
+            <pre><code data-trim class="javascript">
+PATCH /posts/1
+Content-Type: application/json-patch+json
+
+[
+  { "op": "replace", "path": "/title", "value": "A new title" }
+]
+            </code></pre>
+            <p>Replace attribute <code>title</code> of resource <code>/posts/1</code> with value <code>A new title</code></p>
+          </section>
+          <section>
+            <h2>Implementations</h2>
+            <ul>
+              <li><strong>Ruby</strong> <a href="https://github.com/rails-api/active_model_serializers">ActiveModel::Serializers</a> (0.9.0 released last Friday)</li>
+              <li><strong>Javascript</strong> Ember Data</li>
+              <li>... other languages too</li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <h2>Thank you</h2>
+          <img src="images/hstry.svg" alt="Logo of Hstry" class="hstry-logo" />
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="lib/js/jquery-2.0.3.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      $('.slide-architecture').attr('data-transition', 'none');
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      //transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+      transition: 'linear',
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+        { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+    });
+
+    </script>
+
+  </body>
+</html>
