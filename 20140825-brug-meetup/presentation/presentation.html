@@ -50,6 +50,17 @@
           <h2>A bit of background</h2>
           <p><a href="http://www.hstry.co">Hstry</a> application has a <strong>Ruby on Rails REST API</strong> and an <strong>Ember.js front-end</strong></p>
           <p>Server-client communication is all <strong>JSON</strong></p>
+          <p>API is not public: just one front-end</p>
+        </section>
+        <section>
+          <h2>Today I'm talking about</h2>
+          <ol>
+            <li>What is REST?</li>
+            <li>Authentication</li>
+            <li>Authorization</li>
+            <li>HTTP status codes</li>
+            <li>JSON API</li>
+          </ol>
         </section>
         <section>
           <section>
@@ -112,6 +123,7 @@
               <li>Automatically sent with every request</li>
               <li>Also sends other stored information</li>
               <li>Stores text, not objects</li>
+              <li>Not very RESTful</li>
             </ul>
           </section>
           <section>
@@ -120,7 +132,8 @@
               <li>Part of Web Storage specification</li>
               <li>Secure, per-domain storage</li>
               <li>Stores Javascript objects, not text</li>
-              <li>Stays on client (manually send with every request)</li>
+              <li>Stays on client</li>
+              <li>Send token through query parameter</li>
               <li>Browser support is good (<a href="http://caniuse.com/#feat=namevalue-storage">caniuse.com</a>)</li>
             </ul>
           </section>
@@ -211,8 +224,8 @@ end
           </section>
           <section>
             <p><a href="http://jsonapi.org/">jsonapi.org</a></p>
-            <p>Standard for representation of JSON responses</p>
             <p>Initiative by Steve Klabnik and Yehuda Katz</p>
+            <p>Standard for representation of JSON responses</p>
             <p>Belief that shared conventions increase productivity through generalized tooling</p>
           </section>
           <section>
@@ -266,7 +279,7 @@ end
             </code></pre>
           </section>
           <section>
-            <h3>...support for PATCH</h3>
+            <h3>...structure for PATCH</h3>
             <pre><code data-trim class="javascript">
 PATCH /posts/1
 Content-Type: application/json-patch+json
