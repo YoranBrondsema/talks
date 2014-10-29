@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Meetup #5</title>
+    <meta name="description" content="Presentation for the Belgium Ember.js meetup group">
+    <meta name="author" content="Yoran Brondsema">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/hstry.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/github.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+    <!--[if lt IE 9]>
+      <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section class="intro">
+          <h2>Welcome to meetup #5!</h2>
+          <time datetime="2014-10-29">October 29th 2014</time>
+          <img src="images/ember-belgium.png" alt="Ember.js Belgium" />
+        </section>
+        <section>
+          <h2>Sponsors</h2>
+          <ul>
+            <li><a href="http://www.hstry.co"><strong>Hstry</strong></a> beer and organization</li>
+            <li><a href="http://www.betacowork.com/"><strong>Betacowork Coworking Brussels</strong></a> venue</li>
+          </ul>
+        </section>
+        <section>
+          <h2>What has changed in Ember world?</h2>
+        </section>
+        <section>
+          <section>
+            <h2>Ember 1.8 released</h2>
+          </section>
+          <section>
+            <h3>Incremental introduction of HTMLBars</h3>
+          </section>
+          <section>
+            <h3><a href="http://jonathan-jackson.net/htmlbar-chart/">HTMLBar Chart</a></h3>
+          </section>
+          <section>
+            <h3>No more 1542 &lt;script&gt; tags in your DOM</h3>
+            <img src="images/metamorph.png" alt="No more Metamorph tags!" />
+          </section>
+          <section>
+            <h3>Caching of camelCase or snake_case operations in lookups</h3>
+          </section>
+          <section>
+            <h3>Deprecation of <code>Ember.set</code></h3>
+          </section>
+          <section>
+            <h3>No more <code>{{view App.PostView}}</code> but <code>{{view 'post'}}</code></h3>
+          </section>
+          <section>
+            <h3><code>didInsertElement</code> is always called on a child view before called on the parent</h3>
+          </section>
+          <section>
+            <p>For more see <a href="http://emberjs.com/blog/2014/10/26/ember-1-8-0-released.html">http://emberjs.com/blog/2014/10/26/ember-1-8-0-released.html</a></p>
+          </section>
+        </section>
+        <section>
+          <h2>Gradual packaging of existing libraries as ember-cli addons</h2>
+        </section>
+        <section>
+          <h2>Interesting stuff</h2>
+          <ul>
+            <li><a href="http://ember.zone/the-confusion-around-ember-views-and-components/">The Confusion Around Ember Views and Components</a> (reading)</li>
+            <li><a href="https://www.youtube.com/watch?v=hk49K2SJXDY&utm_source=Ember+Weekly&utm_campaign=1de77c7f91-Ember_Weekly_Issue_76&utm_medium=email&utm_term=0_e96229d21d-1de77c7f91-94773137">Ember NYC - Ember vs React</a> (video)</li>
+            <li><a href="https://www.youtube.com/watch?v=RzMswWbGrpI&utm_source=Ember+Weekly&utm_campaign=1de77c7f91-Ember_Weekly_Issue_76&utm_medium=email&utm_term=0_e96229d21d-1de77c7f91-94773137#t=2600">Ember NYC - Liquid Fire</a> (video)</li>
+            <li><a href="https://github.com/eoinkelly/ember-runloop-handbook">A deep dive into the Ember.js runloop</a> (reading)</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="lib/js/jquery-2.0.3.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      $('.slide-architecture').attr('data-transition', 'none');
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      //transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+      transition: 'linear',
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        // { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/highlight/highlight.pack.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+        { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+    });
+
+    </script>
+
+  </body>
+</html>
