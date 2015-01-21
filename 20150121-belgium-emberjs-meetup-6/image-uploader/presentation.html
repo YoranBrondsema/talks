@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A client-side image uploader in Ember.js</title>
+    <meta name="description" content="Presentation for the Belgium Ember.js meetup group">
+    <meta name="author" content="Yoran Brondsema">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/hstry.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/github.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+    <!--[if lt IE 9]>
+      <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section class="intro">
+          <h2>A client-side image uploader in Ember.js</h2>
+          <time datetime="2015-01-21">January 21st 2015</time>
+          <img src="images/ember-belgium.png" alt="Ember.js Belgium" />
+        </section>
+        <section>
+          <h2><a href="http://localhost:3000/timeline/35">Demo</a></h2>
+        </section>
+        <section>
+          <h2>Traditional method: server-side</h2>
+          <ul>
+            <li>Client sends image to server as form payload</li>
+            <li>Server processes image, create multiple sizes</li>
+            <li>Server uploads all sizes to storage (S3 in our case)</li>
+          </ul>
+        </section>
+        <section>
+          <section>
+            <h3>High load on server</h3>
+          </section>
+          <section>
+            <h3>We found our servers are not great at resizing images</h3>
+            <p>Latency to upload an image was long</p>
+          </section>
+          <section>
+            <h3>We used <code>carrierwave</code> gem, we were stuck with its imposed way of working</h3>
+          </section>
+          <section>
+            <h3>Hard to provide responsive images</h3>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h3>Decided we needed to optimize this</h3>
+          </section>
+          <section>
+            <h3>Switched to a client-side uploader:</h3>
+            <ul>
+              <li>Client does the processing and resizing</li>
+              <li>Client uploads directly to S3</li>
+              <li>Server is hardly involved</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Fear that resizing would take too long on clients. Not the case (<a href="http://localhost:3000/timeline/35">Demo</a>)</h3>
+          </section>
+          <section>
+            <h3>What does client need?</h3>
+            <ul>
+              <li>File API: Firefox, Chrome, Safari, IE10+ (<a href="http://caniuse.com/#feat=fileapi">caniuse.com</a>)</li>
+              <li>Web Workers (optional): Firefox, Chrome, Safari, IE10+ (<a href="http://caniuse.com/#feat=webworkers">caniuse.com</a>)</li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <h2>Models</h2>
+          <pre><code data-trim class="javascript">
+App.ImageFile = DS.Model.extend({
+  /* Associations */
+  imageVersions: DS.hasMany('imageVersion'),
+  /* Attributes */
+  caption: DS.attr('string')
+});
+          </code></pre>
+          <pre><code data-trim class="javascript">
+App.ImageVersion = DS.Model.extend({
+  /* Associations */
+  imageFile: DS.belongsTo('imageFile'),
+  /* Attributes */
+  width: DS.attr('number'),
+  height: DS.attr('number'),
+  url: DS.attr('string')
+});
+          </code></pre>
+        </section>
+        <section>
+          <h2>Component</h2>
+          <pre><code data-trim class="handlebars">
+{{image-uploader sizes=imageSizes imageUpdated="someActionOnController"}}
+          </code></pre>
+          <ul>
+            <li>Input: <code>sizes</code> (array of <code>{ width: ..., height: ... }</code> objects)</li>
+            <li>Event: <code>imageUpdated</code></li>
+          </ul>
+        </section>
+        <section>
+          <section>
+            <h2>Serving responsive images</h2>
+          </section>
+          <section>
+            <h3>Idea: serve images adapted to the screen size.</h3>
+            <p>No point showing a 1920px image on smartphone</p>
+          </section>
+          <section>
+            <h3>Look at your analytics for deciding which sizes to serve</h3>
+          </section>
+          <section>
+            <h3>How does it work?</h3>
+            <ul>
+              <li>Each <code>ImageFile</code> has multiple <code>ImageVersion</code>s of different sizes</li>
+              <li>After rendering, measure width and height of image container</li>
+              <li>Pick best <code>ImageVersion</code> according to this (first biggest dimension)</li>
+              <li>Set <code>imageFile.get('url')</code> as <code>src</code> attribute of the <code>&lt;img&gt;</code></li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Advantages</h2>
+          </section>
+          <section>
+            <h3>Lower latency for the client</h3>
+          </section>
+          <section>
+            <h3>No heavy processing anymore for server</h3>
+          </section>
+          <section>
+            <h3>Much for flexible than a library like <code>carrierwave</code></h3>
+          </section>
+          <section>
+            <h3>Possibility to adapt resizing algorithm according to client</h3>
+            <p>2500€ PC vs smartphone</p>
+          </section>
+        </section>
+        <section>
+          <h2>Questions?</h2>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="lib/js/jquery-2.0.3.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      $('.slide-architecture').attr('data-transition', 'none');
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      contruls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      //transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+      transition: 'linear',
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        // { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/highlight/highlight.pack.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+        { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+    });
+
+    </script>
+
+  </body>
+</html>
