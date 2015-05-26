@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Meetup #7</title>
+    <meta name="description" content="Presentation for the Belgium Ember.js meetup group">
+    <meta name="author" content="Yoran Brondsema">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/hstry.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/github.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+    <!--[if lt IE 9]>
+      <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section class="intro">
+          <h2>Welcome to meetup #7!</h2>
+          <time datetime="2015-05-25">May 27th 2015</time>
+          <img src="images/ember-belgium.png" alt="Ember.js Belgium" />
+        </section>
+        <section>
+          <h2>Sponsors</h2>
+          <ul>
+            <li><a href="http://www.hstry.co"><strong>Hstry</strong></a> organization</li>
+            <li><a href="https://insilicodb.com/"><strong>InSilicoDB</strong></a> venue and beer</li>
+          </ul>
+        </section>
+        <section>
+          <section>
+            <h2>What has changed in Ember world?</h2>
+          </section>
+          <section>
+            <h3>3 releases</h3>
+            <ul>
+              <li>1.10, 1.10.1</li>
+              <li>1.11, 1.11.1, 1.11.2, 1.11.3</li>
+              <li>1.12</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Road to Ember 2.0</h3>
+            <ul>
+              <li>Development is going extremely fast</li>
+              <li>Sometimes feels hard to keep up</li>
+              <li>Incremental changes instead of one big release that breaks everything</li>
+              <li>IE8 is no longer supported</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Add new syntax, remove old syntax</h3>
+            <ul>
+              <li>Old syntax is first deprecated before being removed</li>
+              <li>Deprecations are shown in the console and Ember Inspector</li>
+              <li>List of deprecations: <a href="http://emberjs.com/deprecations/v1.x/">http://emberjs.com/deprecations/v1.x/</a></li>
+            </ul>
+          </section>
+          <section>
+            <h3>Performance, performance, performance</h3>
+            <ul>
+              <li>HTMLBars</li>
+              <li>Glimmer engine, inspired by Facebook's React.js</li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Ember 1.10 (Feb 7th)</h2>
+            <p>See <a href="http://emberjs.com/blog/2015/02/07/ember-1-10-0-released.html">Ember.js 1.10.0 and 1.11 Beta Released</a></p>
+          </section>
+          <section>
+            <h3>HTMLBars replaced Handlebars</h3>
+            <ul>
+              <li>Better performance</li>
+              <li>Easier to write templates (see later)</li>
+            </ul>
+          </section>
+          <section>
+            <h3><code>{{else if}}</code> in templates</h3>
+            <img src="images/else-if.png">
+          </section>
+          <section>
+            <h3>Block parameters</h3>
+            <img src="images/block-parameters.png">
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Ember 1.11 (Mar 27th)</h2>
+            <p>See <a href="http://emberjs.com/blog/2015/03/27/ember-1-11-0-released.html">Ember.js 1.11.0 and 1.12 Beta Released</a></p>
+          </section>
+          <section>
+            <h3>No more <code>{{bind-attr}}</code></h3>
+            <img src="images/bound-helpers.png">
+            <img src="images/bound-helpers-inline-if.png">
+          </section>
+          <section>
+            <h3><code>{{each}}</code> with index</h3>
+            <img src="images/each-with-index.png">
+          </section>
+          <section>
+            <h3>Performance improvements</h3>
+            <p><i>Compared to 1.10, common list rendering scenarios have improved by about twenty percent and view instance creation is over twice as fast.</i></p>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Ember 1.12 (May 13th)</h2>
+            <p>See <a href="http://emberjs.com/blog/2015/05/13/ember-1-12-released.html">Ember.js 1.12 and 1.13 Beta (Glimmer!) Released</a></p>
+          </section>
+          <section>
+            <h3>New syntax for computed properties</h3>
+            <img src="images/computed-properties.png">
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Summary</h2>
+            <ul>
+              <li>Ember.js is growing and changing extremely fast</li>
+              <li>Performance was (finally) addressed</li>
+              <li>Lot of attention to easy upgrade path</li>
+            </ul>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="lib/js/jquery-2.0.3.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      $('.slide-architecture').attr('data-transition', 'none');
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      //transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+      transition: 'linear',
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        // { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/highlight/highlight.pack.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+        { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+    });
+
+    </script>
+
+  </body>
+</html>
