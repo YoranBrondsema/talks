@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Meetup #8</title>
+    <meta name="description" content="Presentation for the Belgium Ember.js meetup group">
+    <meta name="author" content="Yoran Brondsema">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/hstry.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/github.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+    <!--[if lt IE 9]>
+      <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section class="intro">
+          <h2>Welcome to meetup #8!</h2>
+          <time datetime="2015-09-02">September 2nd 2015</time>
+          <img src="images/ember-belgium.png" alt="Ember.js Belgium" />
+        </section>
+        <section>
+          <h2>Sponsors</h2>
+          <ul>
+            <li><a href="http://www.hstry.co"><strong>Hstry</strong></a> organization and beer</li>
+            <li><a href="https://insilicodb.com/"><strong>InSilicoDB</strong></a> venue</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Schedule</h2>
+          <ul>
+            <li><strong>What has changed in Ember.js world since last meetup?</strong> (myself)</li>
+            <li><strong>Securing Your Ember.js Application</strong> (Philippe de Ryck)</li>
+          </ul>
+        </section>
+        <section>
+          <section>
+            <h2>What has changed in Ember world?</h2>
+          </section>
+          <section>
+            <h3>Releases</h3>
+            <ul>
+              <li>Ember.js: 1.13, 2.0</li>
+              <li>Ember Data: 1.0.0beta19, 1.13</li>
+              <li>ember-cli: 1.13</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Lockstep development for Ember.js, Ember Data, Liquid Fire and ember-cli</h3>
+            <ul>
+              <li>Will follow the same versioning from 2.0</li>
+              <li>A new version of Ember.js will always be tested with the recent versions of the other libraries</li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Changes in Ember.js</h2>
+          </section>
+          <section>
+            <ul>
+              <li>Deprecations in 1.13</li>
+              <li>Errors in 2.0</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Immutable data structures</h3>
+            <ul>
+              <li>Glimmer only re-renders the diff</li>
+              <li>Can now work with immutable data structures (e.g. <code>sort</code> returns a new array)</li>
+<pre><code data-trim class="handlebars">
+{{#each |items| as item}}
+  {{timeline-item item=item}}
+{{/each}}
+</code></pre>
+            </ul>
+          </section>
+          <section>
+            <h3>Move towards components</h3>
+            <ul>
+              <li>Components are taking a prominent place</li>
+              <li>Long-term: move everything into components (routable components)</li>
+              <li>"Data in, events out" paradigm</li>
+            </ul>
+          </section>
+          <section>
+            <h3>No more views!</h3>
+            <ul>
+              <li>Views are deprecated in 1.13</li>
+              <li>Annoying cause routable components are not there yet</li>
+              <li>Wasn't clear what to replace a view with</li>
+            </ul>
+          </section>
+          <section>
+            <h3>IE8 no longer supported</h3>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Changes in Ember Data</h2>
+          </section>
+          <section>
+            <h3>Out of beta!</h3>
+            <ul>
+              <li>Last beta release was beta19</li>
+              <li>Jumped straight to 1.13</li>
+              <li>API changes but backwards compatible</li>
+            </ul>
+          </section>
+          <section>
+            <h3>JSON API v1.0</h3>
+            <ul>
+              <li>JSON API has more or less stabilized with the 1.0 release</li>
+              <li>Ember Data includes an adapter and serializer for JSON API</li>
+            </ul>
+          </section>
+          <section>
+            <h3>New behavior for <code>find</code> methods</h3>
+            <ul>
+              <li>First time <code>store.find</code> is called, fetch new data</li>
+              <li>Next time return cached data</li>
+              <li>Fetch new data in the background and update</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Associations are async by default</h3>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>HSTRY is moving to Chile</h2>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="lib/js/jquery-2.0.3.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      $('.slide-architecture').attr('data-transition', 'none');
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      //transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+      transition: 'linear',
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        // { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/highlight/highlight.pack.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+        { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+    });
+
+    </script>
+
+  </body>
+</html>
