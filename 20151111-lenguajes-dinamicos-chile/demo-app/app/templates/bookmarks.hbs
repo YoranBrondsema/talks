@@ -1,0 +1,25 @@
+{{#link-to 'index'}}Click here for the homepage{{/link-to}}
+
+<h3>Add a new bookmark</h3>
+<form {{action 'createNewBookmark' on='submit'}}>
+  <div>
+    <label>URL</label>
+    {{input value=newBookmark.url}}
+  </div>
+
+  <div>
+    <label>Description</label>
+    {{textarea value=newBookmark.description}}
+  </div>
+
+  <input type="submit" value="Create new bookmark">
+</form>
+
+<h3>All the bookmarks</h3>
+
+<button type="button" {{action 'sortByDescription'}}>Sort by description</button>
+<button type="button" {{action 'sortByCreatedAt'}}>Sort by created at</button>
+
+{{#each sortedBookmarks as |bookmark|}}
+  {{book-mark bookmark=bookmark}}
+{{/each}}

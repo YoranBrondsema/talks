@@ -1,0 +1,3 @@
+{{input type="checkbox" checked=bookmark.isArchived}}
+<a href="{{bookmark.url}}" class="{{if bookmark.isArchived 'archived'}}">{{bookmark.description}}</a>
+<time>{{bookmark.createdAt}}</time>
