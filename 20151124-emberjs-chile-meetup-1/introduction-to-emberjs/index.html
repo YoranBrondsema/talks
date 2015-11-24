@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Ember.js Chile - Meetup #1</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/hstry.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+        <section>
+          <h2>Ember.js Chile</h2>
+          <img class="logo-emberjs-chile" src="images/emberjs-chile.svg">
+          <h3>Welcome to the first meetup!</h3>
+        </section>
+
+				<section>
+          <section>
+            <h2>Who am I?</h2>
+          </section>
+
+          <section>
+            <h3>Yoran Brondsema</h3>
+            <p>from Holland</p>
+          </section>
+
+          <section>
+            <h3>CTO of <a href="https://www.hstry.co">HSTRY</a></h3>
+            <h3>Participating in Start-Up Chile</h3>
+            <img class="logo-hstry" src="images/hstry.svg">
+          </section>
+
+          <section>
+            <h3>Have been using Ember.js since September 2013</h3>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Schedule for tonight</h2>
+            <ul>
+              <li>Why this meetup?</li>
+              <li>Round the table</li>
+              <li>Some things about Ember.js</li>
+              <li>Live coding session</li>
+              <li>Community announcements</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Why this meetup group?</h2>
+          </section>
+
+          <section>
+            <h3>Ember.js is getting more</h3>
+            <ul>
+              <li>Stable</li>
+              <li>Mature</li>
+              <li>Popular</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>I organized the Belgian meetups</h3>
+            <img src="images/emberjs-belgium.png">
+          </section>
+
+          <section>
+            <h3>Local community is enriching</h3>
+          </section>
+
+          <section>
+            <h3>Sharing knowledge, experience</h3>
+            <h3>Meeting other Emberists</h3>
+            <h3>Jobs?</h3>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Plan</h2>
+          </section>
+
+          <section>
+            <h3>Monthly meetups</h3>
+          </section>
+
+          <section>
+            <h3>Build the community together</h3>
+          </section>
+
+          <section>
+            <h3>Looking for talks</h3>
+          </section>
+
+          <section>
+            <h3>¿Y en español?</h3>
+          </section>
+        </section>
+
+        <section>
+          <h2>Round the table</h2>
+          <ol>
+            <li>Who are you?</li>
+            <li>Why did you come today?</li>
+            <li>Are you using Ember.js? If yes, in what context?</li>
+          </ol>
+        </section>
+
+        <section>
+          <section>
+            <h2>Some things about Ember.js</h2>
+          </section>
+
+          <section>
+            <h3>A framework for making ambitious web applications</h3>
+          </section>
+
+          <section>
+            <h3>Three big projects in Ember world</h3>
+            <ul>
+              <li><strong>Ember.js</strong> the main framework</li>
+              <li><strong>Ember Data</strong> the model layer</li>
+              <li><strong>Ember CLI</strong> the toolchain</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Some dates</h3>
+            <ul>
+              <li><strong>August 2013</strong> Ember 1.0.0</li>
+              <li><strong>March 2014</strong> launch of Ember CLI</li>
+              <li><strong>June 2015</strong> Ember Data 1.13 (first non-beta release)</li>
+              <li><strong>August 2015</strong> Ember 2.0.0</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <h2>Let's get to coding</h2>
+          <h3>We want it interactive, please ask questions!</h3>
+        </section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
