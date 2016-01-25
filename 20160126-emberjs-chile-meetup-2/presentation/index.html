@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Prevent bugs by testing your Ember.js application</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/hstry.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+        <section>
+          <h2>Testing your Ember.js application</h2>
+        </section>
+
+				<section>
+          <section>
+            <h2>I am</h2>
+          </section>
+          <section>
+            <p>CTO at</p>
+            <a href="https://www.hstry.co"><img class="logo-hstry" src="images/hstry.svg" alt="Logo of HSTRY"></a>
+          </section>
+          <section>
+            <img class="logo-ember" src="images/ember.svg">
+            <p>organizer of <a href="http://www.meetup.com/Ember-js-Chile/">Ember.js Chile</a></p>
+            <p>ex-organizer of <a href="http://www.meetup.com/Ember-js-Belgium/">Ember.js Belgium</a></p>
+          </section>
+          <section>
+            <p>learning Spanish</p>
+          </section>
+				</section>
+
+        <section>
+          <section>
+            <h2>Testing in general</h2>
+          </section>
+
+          <section>
+            <p>From our experience at HSTRY</p>
+            <p>Ember.js application with about ~7000 logins per day</p>
+          </section>
+
+          <section>
+            <h3>Testing is important for many reasons</h3>
+          </section>
+
+          <section>
+            <p>Prevent regressions</p>
+          </section>
+
+          <section>
+            <p>Better code quality: refactor without fear</p>
+          </section>
+
+          <section>
+            <p>Better code quality: writing tests forces you to think about edge cases</p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Testing in Ember.js</h2>
+          </section>
+
+          <section>
+            <h3>Testing is a first-class citizen in Ember.js</h3>
+          </section>
+
+          <section>
+            <h3>DEMO</h3>
+          </section>
+        </section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
