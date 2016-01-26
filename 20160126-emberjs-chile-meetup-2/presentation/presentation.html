@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Meetup #8</title>
+    <meta name="description" content="Presentation for the Belgium Ember.js meetup group">
+    <meta name="author" content="Yoran Brondsema">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/hstry.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/github.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+    <!--[if lt IE 9]>
+      <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h2>Testing your Ember.js application</h2>
+        </section>
+
+				<section>
+          <section>
+            <h2>I am</h2>
+          </section>
+          <section>
+            <p>CTO at</p>
+            <a href="https://www.hstry.co"><img class="logo-hstry" src="images/hstry.svg" alt="Logo of HSTRY"></a>
+          </section>
+          <section>
+            <img class="logo-ember" src="images/ember.svg">
+            <p>organizer of <a href="http://www.meetup.com/Ember-js-Chile/">Ember.js Chile</a></p>
+            <p>ex-organizer of <a href="http://www.meetup.com/Ember-js-Belgium/">Ember.js Belgium</a></p>
+          </section>
+          <section>
+            <p>learning Spanish</p>
+          </section>
+				</section>
+
+        <section>
+          <section>
+            <h2>Testing in general</h2>
+          </section>
+
+          <section>
+            <p>From our experience at HSTRY</p>
+            <p>Ember.js application with about ~7000 logins per day</p>
+          </section>
+
+          <section>
+            <h3>Testing is important for many reasons</h3>
+          </section>
+
+          <section>
+            <p>Prevent regressions</p>
+          </section>
+
+          <section>
+            <p>Better code quality: refactor without fear</p>
+          </section>
+
+          <section>
+            <p>Better code quality: writing tests forces you to think about edge cases</p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Testing in Ember.js</h2>
+          </section>
+
+          <section>
+            <h3>Testing is a first-class citizen in Ember.js</h3>
+          </section>
+
+          <section>
+            <h3><a href="https://guides.emberjs.com/v2.3.0/testing/">https://guides.emberjs.com/v2.3.0/testing/</a></h3>
+          </section>
+
+          <section>
+            <h3>With ember-cli, two ways:</h3>
+            <ul>
+              <li>in browser (development): http://localhost:4200/tests</li>
+              <li>in terminal (CI): <code>ember test</code></li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>In general, two levels of testing your application:</h3>
+            <ul>
+              <li>integration testing (slow): simulate real user, happy path</li>
+              <li>unit testing (fast): isolated functions, all paths (including errors)</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Integration tests</h3>
+            <ul>
+              <li>Simulate a real user (visit page, click on link, click on button, test presence of HTML elements in DOM)</li>
+              <li>Perfect for simulating happy path</li>
+              <li>Implementation independent</li>
+              <li>Tests the integration between back-end and front-end</li>
+              <li>Slow</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Unit tests</h3>
+            <ul>
+              <li>Test isolated functions</li>
+              <li>Allows to test scenarios that are hard/impossible to simulate (connection drop-off, server request fails)</li>
+              <li>Tightly coupled with the implementation</li>
+              <li>Fast</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>These concepts hold for an Ember.js application, with addition of Ember.js component tests</h3>
+            <ul>
+              <li>Isolated integration tests: no interaction with back-end so fast, but tests the behavior</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Testing the Ember.js application at HSTRY</h3>
+            <ul>
+              <li>
+                Integration tests
+                <ul>
+                  <li>Full integration tests: user simulation (very slow)</li>
+                  <li>Component integration tests (semi-fast)</li>
+                </ul>
+              </li>
+              <li>
+                Unit tests (fast)
+                <ul>
+                  <li>Models</li>
+                  <li>Controllers</li>
+                  <li>Routes</li>
+                  <li>Components</li>
+                  <li>Utility functions</li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>DEMO</h3>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="lib/js/jquery-2.0.3.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      $('.slide-architecture').attr('data-transition', 'none');
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      //transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+      transition: 'linear',
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        // { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/highlight/highlight.pack.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+        { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+    });
+
+    </script>
+
+  </body>
+</html>
